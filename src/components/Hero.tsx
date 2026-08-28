@@ -4,7 +4,7 @@ import { Navbar } from './Navbar';
 import { EmailCapturePanel } from './EmailCapturePanel';
 import { ShareToast } from './ShareToast';
 import { HERO_BG_IMAGE_JPG, HERO_BG_IMAGE_WEBP } from '../config';
-import { submitEmailInBackground, triggerDownload } from '../lib/downloadFlow';
+import { getCountry, submitEmailInBackground, triggerDownload } from '../lib/downloadFlow';
 
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -20,9 +20,10 @@ export function Hero() {
   const textOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const bgY = useTransform(scrollYProgress, [0, 1], [0, -100]);
 
-  function handleDownloadClick(email: string | null) {
+  async function handleDownloadClick(email: string | null) {
     if (email) {
-      submitEmailInBackground(email);
+      const country = await getCountry(); // safe to await — getCountry() always resolves, never throws
+      submitEmailInBackground(email, country); // stays fire-and-forget, NOT awaited
     }
     triggerDownload();
     setShowEmailPanel(false);

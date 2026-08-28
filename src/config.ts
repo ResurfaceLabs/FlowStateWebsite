@@ -1,7 +1,8 @@
-export const DMG_PATH = '/downloads/FlowState.dmg';
+export const DMG_PATH =
+  'https://github.com/ResurfaceLabs/flowstate-release/releases/latest/download/FlowState.dmg';
 export const HERO_BG_IMAGE_JPG = '/hero-bg.jpg';
 export const HERO_BG_IMAGE_WEBP = '/hero-bg.webp';
-export const LOGO_PATH = '/logo.png';
+export const LOGO_PATH = '/logo.svg';
 
 export const GOOGLE_SHEETS_ENDPOINT = import.meta.env.VITE_SHEETS_ENDPOINT || '';
 

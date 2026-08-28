@@ -4,10 +4,20 @@ export function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 }
 
-export function submitEmailInBackground(email: string): void {
+export async function getCountry(): Promise<string> {
+  try {
+    const res = await fetch('https://ipapi.co/json/');
+    const data = await res.json();
+    return data.country_name || '';
+  } catch {
+    return ''; // must fail quietly — this can never throw or hang the caller
+  }
+}
+
+export function submitEmailInBackground(email: string, country: string): void {
   if (!GOOGLE_SHEETS_ENDPOINT) return;
 
-  const body = new URLSearchParams({ email });
+  const body = new URLSearchParams({ email, country });
 
   fetch(GOOGLE_SHEETS_ENDPOINT, {
     method: 'POST',

@@ -29,6 +29,16 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
+button:not(:disabled),
+a,
+[role='button'] {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
 .liquid-glass {
   background: rgba(255, 255, 255, 0.01);
   background-blend-mode: luminosity;
