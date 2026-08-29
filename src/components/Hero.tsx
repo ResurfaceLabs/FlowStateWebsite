@@ -69,7 +69,7 @@ export function Hero() {
             New
           </span>
           <span className="text-sm font-medium text-muted-foreground">
-            100% Offline. Zero Servers.
+            100% Free. 100% Private.
           </span>
         </motion.div>
 
@@ -79,9 +79,8 @@ export function Hero() {
           transition={{ duration: 0.6, delay: 0.1 }}
           className="mb-3 text-5xl font-medium leading-tight tracking-[-2px] md:text-7xl md:leading-[1.15]"
         >
-          Speak Your Mind.
-          <br />
-          Stay Completely <span className="font-serif italic font-normal">Private</span>.
+          Speak freely, <br />
+          only your mac hears.<br/><span className="font-serif italic font-normal">it's private.</span>
         </motion.h1>
 
         <motion.p
@@ -90,7 +89,7 @@ export function Hero() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-8 text-lg font-normal leading-6 opacity-90 text-hero-subtitle"
         >
-          FlowState turns your voice into text, instantly — <br />
+          FlowState turns your voice into text, instantly <br />
           no internet, no cloud, no one listening but you.
         </motion.p>
 
