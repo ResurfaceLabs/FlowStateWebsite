@@ -1,15 +1,34 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Navbar } from './Navbar';
 import { EmailCapturePanel } from './EmailCapturePanel';
 import { ShareToast } from './ShareToast';
 import { HERO_BG_IMAGE_JPG, HERO_BG_IMAGE_WEBP } from '../config';
-import { getCountry, submitEmailInBackground, triggerDownload } from '../lib/downloadFlow';
+import {
+  getCountry,
+  getSourceParam,
+  logDownload,
+  logVisit,
+  triggerDownload,
+} from '../lib/downloadFlow';
 
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const [showEmailPanel, setShowEmailPanel] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [source] = useState(getSourceParam);
+  const hasLoggedVisit = useRef(false);
+
+  useEffect(() => {
+    if (hasLoggedVisit.current) return; // guards against Strict Mode's dev-only double-invocation
+    hasLoggedVisit.current = true; // set synchronously, before the await below, so the guard holds even once this is async
+
+    (async () => {
+      const country = await getCountry(); // always resolves — empty string on any failure, never throws
+      logVisit(source, country);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -21,9 +40,11 @@ export function Hero() {
   const bgY = useTransform(scrollYProgress, [0, 1], [0, -100]);
 
   async function handleDownloadClick(email: string | null) {
+    const country = await getCountry(); // safe to await — getCountry() always resolves, never throws
     if (email) {
-      const country = await getCountry(); // safe to await — getCountry() always resolves, never throws
-      submitEmailInBackground(email, country); // stays fire-and-forget, NOT awaited
+      logDownload(email, country, source); // stays fire-and-forget, NOT awaited
+    } else {
+      logDownload('', country, source); // skip path — still no email, but country is now captured
     }
     triggerDownload();
     setShowEmailPanel(false);

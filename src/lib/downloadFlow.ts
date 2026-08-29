@@ -14,10 +14,30 @@ export async function getCountry(): Promise<string> {
   }
 }
 
-export function submitEmailInBackground(email: string, country: string): void {
+export function getSourceParam(): string {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('src') || 'direct';
+}
+
+export function logVisit(source: string, country: string): void {
   if (!GOOGLE_SHEETS_ENDPOINT) return;
 
-  const body = new URLSearchParams({ email, country });
+  const body = new URLSearchParams({ type: 'visit', source, country });
+
+  fetch(GOOGLE_SHEETS_ENDPOINT, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body,
+  }).catch(() => {
+    // intentionally swallowed — same fire-and-forget philosophy as logDownload
+  });
+}
+
+export function logDownload(email: string, country: string, source: string): void {
+  if (!GOOGLE_SHEETS_ENDPOINT) return;
+
+  const body = new URLSearchParams({ type: 'download', email, country, source });
 
   fetch(GOOGLE_SHEETS_ENDPOINT, {
     method: 'POST',
