@@ -13,7 +13,7 @@ export function Navbar() {
     <nav className="mx-auto flex max-w-4xl items-center justify-between px-8 py-4 md:px-12">
       <img src={LOGO_PATH} alt="FlowState" className="h-6 w-auto" />
       <a
-        href="https://x.com/useflowstate"
+        href="https://x.com/VanshWTFFF"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="X (Twitter)"
